@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>Личный кабинет</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/static/css/all_styles.css">
+        <link rel="stylesheet" href="/static/css/user_styles.css">
+    </head>
+    <body>
+        <div id="my-modal" class="modal">
+            <div class="modal__box">
+                <h1>Добавить счет</h1>
+                <form method="post" action="/user/{{user_id}}">
+                    <input type="text" name="name" placeholder="Название" />
+                    <input type="text" name="balance" placeholder="Начальный баланс" />
+                    <input type="text" name="currency" placeholder="Валюта (RUB, USD, EUR)" />
+                    <input id="add-account" class="button-special" type="submit" value="Добавить" />
+                </form>
+                <button id="close-modal-btn" class="button-special">Вернуться</button>
+            </div>
+        </div>
+        <div class="placehoder"></div>
+        <h1 id="user-name">{{user_name}} {{user_surname}}</h1>
+        <div class="placehoder-forms">
+            <h1>Счета</h1>
+            {%for account_id, account_info in accounts.items()%}
+            <form method="get" action="/accounts/{{account_id}}">
+                <input class="button-classic" type="submit" value={{account_info.name}}>
+            </form>
+            {%endfor%}
+            <button id="open-modal-btn" class="button-special">Добавить</button>
+        </div>
+        <div class="placehoder"></div>
+        <form method="get" action="/logout">
+            <input id="button-logout" class="button-special" type="submit" value="Выйти">
+        </form>
+        <p class="author-name">Арина Зайцева</p>
+    </body>
+    <script src="/static/js/user_scripts.js"></script>
+</html>
