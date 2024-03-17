@@ -1,0 +1,266 @@
+/* Общие */
+body {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    flex-direction: column;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    overflow: hidden;
+}
+p {
+    margin: 0;
+    padding-top: 4px;
+    padding-left: 6px;
+}
+.button-special {
+    background-color: #E55C9C;
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    font-size: 20px;
+    margin: 0;
+    padding: 7px;
+    max-width: 260px;
+    width: 100%;
+    height: 40px;
+}
+/* Контейнеры: обозначение размеров и расположения элементов */
+#head {
+    display: flex; /* Размеры контенера head */
+    width: 100%;
+    height: 10%;
+    justify-content: space-between; /* Расположение элементов в контейнере head */
+    border-bottom: 4px solid grey;
+}
+#main {
+    display: flex; /* Размеры контенера контейнера main */
+    width: 100%;
+    height: 90%;
+    flex-direction: row; /* Расположение элементов в контейнере main */
+}
+#main-menu {
+    display: flex; /* Размеры контенера main-menu */
+    width: 20%;
+    height: 100%;
+    flex-direction: column; /* Расположение элементов в контейнере main-menu */
+    align-items: center;
+    border-right: 4px solid grey;
+}
+#main-body {
+    display: flex; /* Размеры контенера main-body */
+    width: 80%;
+    height: 100%;
+    flex-direction: row; /* Расположение элементов в контейнере main-body */
+    background-color: rgb(190, 190, 190);
+}
+/* Элементы контейнера c id head */
+.head__element {
+    display: flex;
+    align-items: center;
+    margin: 10px 20px;
+}
+#head__goback-btn {
+    width: 180px;
+}
+/* Элементы контейнера c id main-menu */
+.main-menu__element {
+    width: 90%;
+    margin: 15px 0 0 0;
+}
+#open-modal-delete-btn {
+    margin: 15px 0;
+}
+#spacer {
+    flex-grow: 1;
+}
+/* Элементы контейнера c id main-body */
+.main-body__operation-type {
+    display: flex;
+    width: 50%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+.operation-name {
+    margin: 10px;
+    text-align: center;
+    width: 100%;
+}
+.scroll-container {
+    width: 94%;
+    height: 87%;
+    overflow: scroll;
+    border: 2px solid grey;
+    border-radius: 5px;
+    background-color: white;
+}
+/* Элементы контейнеров с классом scroll-container */
+.operation-fields {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 7px;
+}
+.operation {
+    display: flex;
+    flex-direction: row;
+}
+.operation-date {
+    display: flex;
+    width: 20%;
+    border-right: 2px solid grey;
+    flex-direction: row;
+}
+.operation-category {
+    display: flex;
+    width: 50%;
+    border-right: 2px solid grey;
+    flex-direction: row;
+}
+.operation-amount {
+    display: flex;
+    width: 22%;
+    flex-direction: row;
+}
+.change-operation {
+    width: 8%;
+    color: grey;
+}
+.operation-remove-sort {
+    padding-top: 7px;
+}
+.operation-field {
+    height: 5%;
+    font-weight: 600;
+    text-align: center;
+}
+.fa-sort-down {
+    margin-left: 5px;
+}
+/* Модальное окно */
+.modal {
+    position: absolute; /* Размеры и расположение контейнера modal */
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    z-index: 99998;
+    justify-content: center; /* Расположение элементов в контейнере modal */
+    align-items: center;
+    backdrop-filter: blur(15px);
+    visibility: hidden;
+    opacity: 0;
+}
+.modal-box {
+    display: flex; /* Размеры модального окна */
+    min-width: 20%;
+    max-width: 30%;
+    z-index: 1;
+    flex-direction: column; /* Расположение элементов модального окна */
+    justify-content: center;
+    align-items: center;
+    border: 2px solid grey;
+    border-radius: 5px;
+    background-color: white;
+    padding: 30px 50px;
+}
+.modal-box__btn {
+    margin: 5px;
+}
+/* Форма модального окна */
+.modal-box__form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+}
+input {
+    border: solid 1px grey;
+    border-radius: 5px;
+    width: 100%;
+    margin: 5px 0;
+    padding: 7px;
+    font-size: 20px;
+}
+select {
+    border: solid 1px grey;
+    border-radius: 5px;
+    margin: 5px 0 5px 0;
+    padding: 6px;
+    font-size: 20px;
+    width: 100%;
+}
+option {
+    font-size: 20px;
+}
+h2 {
+    margin: 0 0 7px 0;
+    text-align: center;
+}
+#delete-expanse-form {
+    margin: 5px 0 0 0;
+}
+#close-modal-change-delete-expanse-btn {
+    margin: 5px 0 5px 0;
+}
+#delete-income-form {
+    margin: 5px 0 0 0;
+}
+#close-modal-change-delete-income-btn {
+    margin: 5px 0 5px 0;
+}
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    border: solid 1px grey;
+    border-radius: 5px;
+    padding: 5px;
+    max-width: 444px;
+    height: 20%;
+    overflow: scroll;
+}
+.categories__element {
+    cursor: pointer;
+    display: inline-block;
+    padding: 2px 10px 4px 10px;
+    margin: 5px;
+    border: solid 1px grey;
+    border-radius: 25px;
+}
+.categories__element-selected {
+    cursor: pointer;
+    display: inline-block;
+    padding: 2px 10px 4px 10px;
+    margin: 5px;
+    border: solid 1px #E55C9C;
+    border-radius: 25px;
+    background-color: #E55C9C;
+    color: white;
+}
+.dates {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+label {
+    margin: 5px;
+}
+.input-date {
+    max-width: 179px;
+}
+.amounts {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+label {
+    margin: 5px;
+}
+.input-amount {
+    width: 179px;
+}

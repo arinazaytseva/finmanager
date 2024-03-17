@@ -1,0 +1,398 @@
+<html>
+    <head>
+        <title>Ваш счет</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/static/css/account_styles.css">
+        <script src="https://kit.fontawesome.com/1abb3a3414.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!-- Модальные окна -->
+        <!-- Добавить -->
+        <!-- 1 -->
+        <div id="modal-add-smth" class="modal">
+            <div id="modal-add-smth-box" class="modal-box">
+                <button id="open-modal-choose-operation-type-btn" class="button-special modal-box__btn">Операцию</button>
+                <button id="open-modal-choose-category-type-btn" class="button-special modal-box__btn">Категорию</button>
+                <button id="close-modal-add-smth-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- 1.1 -->
+        <div id="modal-choose-operation-type" class="modal">
+            <div id="modal-choose-operation-type-box" class="modal-box">
+                <button id="open-modal-add-expanse-btn" class="button-special modal-box__btn">Расход</button>
+                <button id="open-modal-add-income-btn" class="button-special modal-box__btn">Доход</button>
+                <button id="close-modal-choose-operation-type-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- 1.2 -->
+        <div id="modal-choose-category-type" class="modal">
+            <div id="modal-choose-category-type-box" class="modal-box">
+                <button id="open-modal-add-expanse-category-btn" class="button-special modal-box__btn">Расходов</button>
+                <button id="open-modal-add-income-category-btn" class="button-special modal-box__btn">Доходов</button>
+                <button id="close-modal-choose-category-type-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- 1.1.1 -->
+        <div id="modal-add-expanse" class="modal">
+            <div id="modal-add-expanse-box" class="modal-box">
+                <h2>Добавить расход</h2>
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/add_expanse">
+                    <input type="date" name="date" required />
+                    <input type="text" name="amount" pattern="[0-9]*[.]?[0-9]*" placeholder="Сумма, {{currency}}" required />
+                    <select name="category" required>
+                        <option value="" selected disabled hidden>Выберите категорию</option>
+                        {%for category_name in categories_expanses%}
+                        <option value="{{category_name}}">{{category_name}}</option>
+                        {%endfor%}
+                    </select>
+                    <input id="add-expanse-btn" class="button-special" type="submit" value="Добавить" />
+                </form>
+                <button id="close-modal-add-expanse-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- 1.1.2 -->
+        <div id="modal-add-income" class="modal">
+            <div id="modal-add-income-box" class="modal-box">
+                <h2>Добавить доход</h2>
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/add_income">
+                    <input type="date" name="date" required/>
+                    <input id="amount-input" type="text" name="amount" pattern="[0-9]*[.]?[0-9]*" placeholder="Сумма, {{currency}}" required/>
+                    <select name="category" required>
+                        <option value="" selected disabled hidden>Выберите категорию</option>
+                        {%for category_name in categories_incomes%}
+                        <option value="{{category_name}}">{{category_name}}</option>
+                        {%endfor%}
+                    </select>
+                    <input id="add-income-btn" class="button-special" type="submit" value="Добавить" />
+                </form>
+                <button id="close-modal-add-income-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- 1.2.1 -->
+        <div id="modal-add-expanse-category" class="modal">
+            <div id="modal-add-expanse-category-box" class="modal-box">
+                <h2>Добавить категорию Расходов</h2>
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/add_category_expanse">
+                    <input type="text" name="name" maxlength="20" placeholder="Название" required />
+                    <input id="add-expanse-category-btn" class="button-special" type="submit" value="Добавить" />
+                </form>
+                <button id="close-modal-add-expanse-category-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- 1.2.2 -->
+        <div id="modal-add-income-category" class="modal">
+            <div id="modal-add-income-category-box" class="modal-box">
+                <h2>Добавить категорию Доходов</h2>
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/add_category_income">
+                    <input type="text" name="name" maxlength="20" placeholder="Название" required />
+                    <input id="add-income-category-btn" class="button-special" type="submit" value="Добавить" />
+                </form>
+                <button id="close-modal-add-income-category-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Переименовать категорию/счет -->
+        <!-- 1 -->
+        <div id="modal-change-name" class="modal">
+            <div id="modal-change-name-box" class="modal-box">
+                <button id="open-modal-change-category-name-choose-category-type-btn" class="button-special modal-box__btn">Категорию</button>
+                <button id="open-modal-change-account-name-btn" class="button-special modal-box__btn">Счет</button>
+                <button id="close-modal-change-name-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Выбрать тип категории -->
+        <!-- 1.1 -->
+        <div id="modal-change-category-name-choose-category-type" class="modal">
+            <div id="modal-change-category-name-choose-category-type-box" class="modal-box">
+                <button id="open-modal-change-expanse-category-name-btn" class="button-special modal-box__btn">Расходов</button>
+                <button id="open-modal-change-income-category-name-btn" class="button-special modal-box__btn">Доходов</button>
+                <button id="close-modal-change-category-name-choose-category-type-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Переименовать категорию расходов -->
+        <!-- 1.1.1 -->
+        <div id="modal-change-expanse-category-name" class="modal">
+            <div id="modal-change-expanse-category-name-box" class="modal-box">
+                <h2>Переименовать категорию Расходов</h2>
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/change-expanse-category-name">
+                    <select name="expanse_category">
+                        <option value="" selected disabled hidden>Выберите категорию</option>
+                        {%for category_name in categories_expanses%}
+                        <option value="{{category_name}}">{{category_name}}</option>
+                        {%endfor%}
+                    </select>
+                    <input type="text" name="expanse_category_new_name" maxlength="20" placeholder="Новое название" required />
+                    <input class="button-special" type="submit" value="Переименовать" />
+                </form>
+                <button id="close-modal-change-expanse-category-name-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Переименовать категорию доходов -->
+        <!-- 1.1.2 -->
+        <div id="modal-change-income-category-name" class="modal">
+            <div id="modal-change-income-category-name-box" class="modal-box">
+                <h2>Переименовать категорию Доходов</h2>
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/change-income-category-name">
+                    <select name="income_category">
+                        <option value="" selected disabled hidden>Выберите категорию</option>
+                        {%for category_name in categories_incomes%}
+                        <option value="{{category_name}}">{{category_name}}</option>
+                        {%endfor%}
+                    </select>
+                    <input type="text" name="income_category_new_name" maxlength="20" placeholder="Новое название" required />
+                    <input class="button-special" type="submit" value="Переименовать" />
+                </form>
+                <button id="close-modal-change-income-category-name-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Переименовать счет -->
+        <!-- 1.2 -->
+        <div id="modal-change-account-name" class="modal">
+            <div id="modal-change-account-name-box" class="modal-box">
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/change-account-name">
+                    <input type="text" name="new_account_name" maxlength="20" placeholder="Название" required />
+                    <input id="change-account-name-btn" class="button-special" type="submit" value="Переименовать" />
+                </form>
+                <button id="close-modal-change-account-name-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Удалить категорию/счет -->
+        <!-- 1 -->
+        <div id="modal-delete" class="modal">
+            <div id="modal-delete-box" class="modal-box">
+                <button id="open-modal-delete-category-choose-category-type-btn" class="button-special modal-box__btn">Категорию</button>
+                <button id="open-modal-delete-account-btn" class="button-special modal-box__btn">Счет</button>
+                <button id="close-modal-delete-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Выбрать тип категории -->
+        <!-- 1.1 -->
+        <div id="modal-delete-category-choose-category-type" class="modal">
+            <div id="modal-delete-category-choose-category-type-box" class="modal-box">
+                <button id="open-modal-delete-expanse-category-btn" class="button-special modal-box__btn">Расходов</button>
+                <button id="open-modal-delete-income-category-btn" class="button-special modal-box__btn">Доходов</button>
+                <button id="close-modal-delete-category-choose-category-type-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Удалить категорию Расходов -->
+        <!-- 1.1.1 -->
+        <div id="modal-delete-expanse-category" class="modal">
+            <div id="modal-delete-expanse-category-box" class="modal-box">
+                <h2>Удалить категорию Расходов</h2>
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/delete-expanse-category">
+                    <select name="expanse_category">
+                        <option value="" selected disabled hidden>Выберите категорию</option>
+                        {%for category_name in categories_expanses%}
+                        <option value="{{category_name}}">{{category_name}}</option>
+                        {%endfor%}
+                    </select>
+                    <input class="button-special" type="submit" value="Удалить" />
+                </form>
+                <button id="close-modal-delete-expanse-category-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Удалить категорию Доходов -->
+        <!-- 1.1.2 -->
+        <div id="modal-delete-income-category" class="modal">
+            <div id="modal-delete-income-category-box" class="modal-box">
+                <h2>Удалить категорию Доходов</h2>
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/delete-income-category">
+                    <select name="income_category">
+                        <option value="" selected disabled hidden>Выберите категорию</option>
+                        {%for category_name in categories_incomes%}
+                        <option value="{{category_name}}">{{category_name}}</option>
+                        {%endfor%}
+                    </select>
+                    <input class="button-special" type="submit" value="Удалить" />
+                </form>
+                <button id="close-modal-delete-income-category-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Удалить счет -->
+        <!-- 1.2 -->
+        <div id="modal-delete-account" class="modal">
+            <div id="modal-delete-account-box" class="modal-box">
+                <form class="modal-box__form" method="post" action="/accounts/{{id}}/delete-account">
+                    <input id="delete-account-btn" class="button-special" type="submit" value="Удалить" />
+                </form>
+                <button id="close-modal-delete-account-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Изменение/удаление расхода -->
+        <div id="modal-change-delete-expanse" class="modal">
+            <div id="modal-change-delete-expanse-box" class="modal-box">
+                <form id="change-expanse-form" class="modal-box__form" method="post">
+                    <input type="date" name="date" placeholder="Дата">
+                    <select name="category">
+                        <option value="" selected disabled hidden>Выберите категорию</option>
+                        {%for category_name in categories_expanses%}
+                        <option value="{{category_name}}">{{category_name}}</option>
+                        {%endfor%}
+                    </select>
+                    <input type="text" name="amount" pattern="[0-9]*[.]?[0-9]*" placeholder="Сумма">
+                    <input id="change-expanse-btn" class="button-special" type="submit" value="Изменить" />
+                </form>
+                <form id="delete-expanse-form" class="modal-box__form" method="post">
+                    <input id="delete-expanse-btn" class="button-special" type="submit" value="Удалить" />
+                </form>
+                <button id="close-modal-change-delete-expanse-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Изменение/удаление дохода -->
+        <div id="modal-change-delete-income" class="modal">
+            <div id="modal-change-delete-income-box" class="modal-box">
+                <form id="change-income-form" class="modal-box__form" method="post">
+                    <input type="date" name="date" placeholder="Дата">
+                    <select name="category">
+                        <option value="" selected disabled hidden>Выберите категорию</option>
+                        {%for category_name in categories_incomes%}
+                        <option value="{{category_name}}">{{category_name}}</option>
+                        {%endfor%}
+                    </select>
+                    <input type="text" name="amount" pattern="[0-9]*[.]?[0-9]*" placeholder="Сумма">
+                    <input id="change-income-btn" class="button-special" type="submit" value="Изменить" />
+                </form>
+                <form id="delete-income-form" class="modal-box__form" method="post">
+                    <input id="delete-income-btn" class="button-special" type="submit" value="Удалить" />
+                </form>
+                <button id="close-modal-change-delete-income-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Фильтровать операции -->
+        <div id="modal-filter-operations-choose-operation-type" class="modal">
+            <div id="modal-filter-operations-choose-operation-type-box" class="modal-box">
+                <button id="open-modal-filter-expanses-btn" class="button-special modal-box__btn">Расходы</button>
+                <button id="open-modal-filter-incomes-btn" class="button-special modal-box__btn">Доходы</button>
+                <button id="close-modal-filter-operations-choose-operation-type-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Фильтровать расходы -->
+        <div id="modal-filter-expanses" class="modal">
+            <div id="modal-filter-expanses-box" class="modal-box">
+                <h2>Фильтровать категорию Расходов</h2>
+                <div id="expanse-categories" class="categories">
+                </div>
+                <div id="dates" class="dates">
+                    <div class="dates__element">
+                        <label for="expanse-start-date">Период от</label>
+                        <input type="date" id="expanse-start-date" name="start-date" class="input-date" />
+                    </div>
+                    <div class="dates__element">
+                        <label for="expanse-end-date">Период до</label>
+                        <input type="date" id="expanse-end-date" name="end-date" class="input-date" />
+                    </div>
+                </div>
+                <div id="amounts" class="amounts">
+                    <div class="amounts__element">
+                        <label for="expanse-start-amount">Сумма от</label>
+                        <input type="text" id="expanse-start-amount" name="start-amount" pattern="[0-9]*[.]?[0-9]*" class="input-amount" />
+                    </div>
+                    <div class="amounts__element">
+                        <label for="expanse-end-amount">Сумма до</label>
+                        <input type="text" id="expanse-end-amount" name="end-amount" pattern="[0-9]*[.]?[0-9]*" class="input-amount" />
+                    </div>
+                </div>
+                <button id="filter-expanses-btn" class="button-special modal-box__btn">Показать</button>
+                <button id="close-modal-filter-expanses-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Фильтровать доходы -->
+        <div id="modal-filter-incomes" class="modal">
+            <div id="modal-filter-incomes-box" class="modal-box">
+                <h2>Фильтровать категорию Доходов</h2>
+                <div id="income-categories" class="categories">
+                </div>
+                <div id="dates" class="dates">
+                    <div class="dates__element">
+                        <label for="income-start-date">Период от</label>
+                        <input type="date" id="income-start-date" name="start-date" class="input-date" />
+                    </div>
+                    <div class="dates__element">
+                        <label for="income-end-date">Период до</label>
+                        <input type="date" id="income-end-date" name="end-date" class="input-date" />
+                    </div>
+                </div>
+                <div id="amounts" class="amounts">
+                    <div class="amounts__element">
+                        <label for="income-start-amount">Сумма от</label>
+                        <input type="text" id="income-start-amount" name="start-amount" pattern="[0-9]*[.]?[0-9]*" class="input-amount" />
+                    </div>
+                    <div class="amounts__element">
+                        <label for="income-end-amount">Сумма до</label>
+                        <input type="text" id="income-end-amount" name="end-amount" pattern="[0-9]*[.]?[0-9]*" class="input-amount" />
+                    </div>
+                </div>
+                <button id="filter-incomes-btn" class="button-special modal-box__btn">Показать</button>
+                <button id="close-modal-filter-incomes-btn" class="button-special modal-box__btn">Закрыть</button>
+            </div>
+        </div>
+        <!-- Основная часть страницы -->
+        <div id="head">
+            <h1 id="account-name" class="head__element">Счет {{name}} {{balance}} {{currency}}</h1>
+            <div id="spacer"></div>
+            <form class="head__element" method="get" action="/">
+                <input id="head__goback-btn" class="button-special" type="submit" value="Вернуться">
+            </form>
+        </div>
+        <div id="main">
+            <div id="main-menu">
+                <button id="open-modal-add-smth-btn" class="button-special main-menu__element">Добавить</button>
+                <button id="open-modal-filter-operations-choose-operation-type-btn" class="button-special main-menu__element">Фильтровать</button>
+                <form id="get-statistics-form" class="main-menu__element" method="get" action="/">
+                    <input class="button-special" type="submit" value="Посмотреть">
+                </form>
+                <div id="spacer"></div>
+                <button id="open-modal-change-name-btn" class="button-special main-menu__element">Переименовать</button>
+                <button id="open-modal-delete-btn" class="button-special main-menu__element">Удалить</button>
+            </div>
+            <div id="main-body">
+                <div class="main-body__operation-type">
+                    <h2 class="operation-name">Расходы</h2>
+                    <div id="expanses-scroll-container" class="scroll-container">
+                        <div class="operation-fields">
+                            <div class="operation-date"><p class="operation-field">Дата</p><i id="sort_expanses_by_date_btn" account_id="{{id}}" class="fa-solid fa-sort-down"></i></div>
+                            <div class="operation-category"><p class="operation-field">Категория</p><i id="sort_expanses_by_category_btn" account_id="{{id}}" class="fa-solid fa-sort-down"></i></div>
+                            <div class="operation-amount"><p class="operation-field">Сумма</p><i id="sort_expanses_by_amount_btn" account_id="{{id}}" class="fa-solid fa-sort-down"></i></div>
+                            <div class="change-operation"></div>
+                        </div>
+                        <div id="expanses">
+                            {%for expanse_id, expanse_info in expanses.items()%}
+                            <div class="operation">
+                                <div class="operation-date"><p>{{expanse_info.day}}/{{expanse_info.month}}/{{expanse_info.year}}</p></div>
+                                <div class="operation-category"><p>{{expanse_info.name_category}}</p></div>
+                                <div class="operation-amount"><p>{{expanse_info.amount}}</p></div>
+                                <div class="change-operation">
+                                    <p><i account_id={{id}} expanse_id={{expanse_id}} class="fa-solid fa-pen open-modal-change-delete-expanse-btn"></i></p>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                </div>
+                <div class="main-body__operation-type">
+                    <h2 class="operation-name">Доходы</h2>
+                    <div id="incomes-scroll-container" class="scroll-container">
+                        <div class="operation-fields">
+                            <div class="operation-date"><p id class="operation-field">Дата</p><i id="sort_incomes_by_date_btn" class="fa-solid fa-sort-down"></i></div>
+                            <div class="operation-category"><p class="operation-field">Категория</p><i id="sort_incomes_by_category_btn" class="fa-solid fa-sort-down"></i></div>
+                            <div class="operation-amount"><p class="operation-field">Сумма</p><i id="sort_incomes_by_amount_btn" class="fa-solid fa-sort-down"></i></div>
+                            <div class="change-operation"></div>
+                        </div>
+                        <div id="incomes">
+                            {%for income_id, income_info in incomes.items()%}
+                            <div id="income" class="operation">
+                                <div class="operation-date"><p>{{income_info.day}}/{{income_info.month}}/{{income_info.year}}</p></div>
+                                <div class="operation-category"><p>{{income_info.name_category}}</p></div>
+                                <div class="operation-amount"><p>{{income_info.amount}}</p></div>
+                                <div class="change-operation"><p><i account_id={{id}} income_id={{income_id}} class="fa-solid fa-pen open-modal-change-delete-income-btn"></i></p></div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/static/js/account_modal_scripts.js"></script>
+    <script src="/static/js/account_sort_scripts.js"></script>
+    <script src="/static/js/account_filter_scripts.js"></script>
+</html>

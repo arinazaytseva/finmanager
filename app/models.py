@@ -26,10 +26,32 @@ class Account(Base):
     balance = Column(Float)
     currency = Column(Enum("RUB", "USD", "EUR", name="currency_enum", create_type=False))
     user_id = Column(Integer, ForeignKey("users.id"))
-
+    
     user = relationship("User", back_populates="accounts")
-    incomes = relationship("Income", back_populates="account")
-    expanses = relationship("Expanse", back_populates="account")
+    incomes = relationship(
+        "Income", 
+        back_populates="account", 
+        cascade="all, delete", 
+        passive_deletes=True
+    )
+    expanses = relationship(
+        "Expanse",
+        back_populates="account",
+        cascade="all, delete", 
+        passive_deletes=True
+    )
+    categories_income = relationship(
+        "Category_Income", 
+        back_populates="account",
+        cascade="all, delete", 
+        passive_deletes=True
+    )
+    categories_expanse = relationship(
+        "Category_Expanse", 
+        back_populates="account",
+        cascade="all, delete", 
+        passive_deletes=True
+    )
 
 
 class Income(Base):
@@ -38,13 +60,13 @@ class Income(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     amount = Column(Float)
-    account_id = Column(Integer, ForeignKey("accounts.id"))
-    category_income_id = Column(Integer, ForeignKey("categories_income.id"))
+    account_id = Column(Integer, ForeignKey("accounts.id", ondelete="CASCADE"))
+    category_income_id = Column(Integer, ForeignKey("categories_income.id", ondelete="CASCADE"))
     date = Column(Date)
 
     account = relationship("Account", back_populates="incomes")
     category_income = relationship("Category_Income", back_populates="incomes")
-
+    
 
 class Expanse(Base):
     """Класс для таблицы Расходы"""
@@ -52,8 +74,8 @@ class Expanse(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     amount = Column(Float)
-    account_id = Column(Integer, ForeignKey("accounts.id"))
-    category_expanse_id = Column(Integer, ForeignKey("categories_expanse.id"))
+    account_id = Column(Integer, ForeignKey("accounts.id", ondelete="CASCADE"))
+    category_expanse_id = Column(Integer, ForeignKey("categories_expanse.id", ondelete="CASCADE"))
     date = Column(Date)
 
     account = relationship("Account", back_populates="expanses")
@@ -66,8 +88,15 @@ class Category_Income(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(20))
+    account_id = Column(Integer, ForeignKey("accounts.id", ondelete="CASCADE"))
 
-    incomes = relationship("Income", back_populates="category_income")
+    account = relationship("Account", back_populates="categories_income")
+    incomes = relationship(
+        "Income", 
+        back_populates="category_income", 
+        cascade="all, delete", 
+        passive_deletes=True
+    )
 
 
 class Category_Expanse(Base):
@@ -76,5 +105,12 @@ class Category_Expanse(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(20))
+    account_id = Column(Integer, ForeignKey("accounts.id", ondelete="CASCADE"))
 
-    expanses = relationship("Expanse", back_populates="category_expanse")
+    account = relationship("Account", back_populates="categories_expanse")
+    expanses = relationship(
+        "Expanse", 
+        back_populates="category_expanse", 
+        cascade="all, delete", 
+        passive_deletes=True
+    )

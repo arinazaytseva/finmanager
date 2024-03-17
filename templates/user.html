@@ -6,6 +6,11 @@
         <link rel="stylesheet" href="/static/css/user_styles.css">
     </head>
     <body>
+        <form method="get" action="/logout">
+            <input id="button-logout" class="button-special" type="submit" value="Выйти">
+        </form>
+        <h1 id="user-name">{{user_name}} {{user_surname}}</h1>
+        <p id="author-name">Арина Зайцева</p>
         <div id="my-modal" class="modal">
             <div class="modal__box">
                 <h1>Добавить счет</h1>
@@ -19,7 +24,6 @@
             </div>
         </div>
         <div class="placehoder"></div>
-        <h1 id="user-name">{{user_name}} {{user_surname}}</h1>
         <div class="placehoder-forms">
             <h1>Счета</h1>
             {%for account_id, account_info in accounts.items()%}
@@ -30,10 +34,6 @@
             <button id="open-modal-btn" class="button-special">Добавить</button>
         </div>
         <div class="placehoder"></div>
-        <form method="get" action="/logout">
-            <input id="button-logout" class="button-special" type="submit" value="Выйти">
-        </form>
-        <p class="author-name">Арина Зайцева</p>
     </body>
     <script src="/static/js/user_scripts.js"></script>
 </html>

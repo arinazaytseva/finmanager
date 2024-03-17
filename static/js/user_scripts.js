@@ -26,12 +26,3 @@ closeModalButton.addEventListener("click", () => {
         closeModal()
     }
 })
-
-// const modal = document.getElementById("my-modal")
-// const openModalButton = document.getElementById("open-modal-btn")
-
-// openModalButton.addEventListener("click", () => {
-//     modal.style.visibility = "hidden"
-//     modal.style.opacity = 0
-//     isModalOpened = false
-// })

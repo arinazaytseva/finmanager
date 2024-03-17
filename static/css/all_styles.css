@@ -4,19 +4,28 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 18px;
-    margin: 0;
 }
-.placeholder {
-    flex: 1;
+button {
+    font-size: 18px;
 }
+
+#author-name {
+    color: gray;
+    position: absolute;
+    bottom: 0;
+    right: 10;
+    margin: 7px 0;
+}
+
 .button-classic {
     background-color: transparent;
     color: black;
     border: solid 1px grey;
-
     border-radius: 5px;
+    font-size: 18px;
     margin: 10px 0;
     padding: 7px;
     width: 100%;
@@ -25,19 +34,9 @@ body {
     background-color: #E55C9C;
     color: white;
     border: 0;
-
     border-radius: 5px;
+    font-size: 18px;
     margin: 10px 0;
     padding: 7px;
     width: 100%;
-}
-button {
-    font-size: 18px;
-}
-.author-name {
-    color: gray;
-    position: absolute;
-    bottom: 0;
-    right: 10;
-    margin: 7px 0;
 }
